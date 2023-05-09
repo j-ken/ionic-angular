@@ -54,7 +54,7 @@ export interface Location {
 
 ```
 
-## 1. Creating the app
+## 1. Create the app
 
 https://ionicframework.com/docs/
 
