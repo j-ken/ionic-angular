@@ -8,8 +8,7 @@
 
 <ion-content>
   <ion-list lines="full">
-    <!-- TODO: Add Link -->
-    <ion-item *ngFor="let contact of contacts" href="#" button detail="false">
+    <ion-item *ngFor="let contact of contacts" [routerLink]="['/contact-detail/', contact.id]" button detail="false">
       <ion-avatar slot="start">
         <img [src]="contact.picture" alt="Profile Picture">
       </ion-avatar>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactsService } from "../../services/contacts.service";
-import {UserPreview} from "../../models/userPreview.model";
+import { UserPreview } from "../../models/userPreview.model";
 
 @Component({
   selector: 'app-contacts-list',
@@ -17,5 +17,4 @@ export class ContactsListPage implements OnInit {
       this.contacts = list.data;
     });
   }
-
 }

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import {List} from "../models/list.model";
+import { List } from "../models/list.model";
+import { UserFull } from "../models/userFull.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,17 @@ export class ContactsService {
         'app-id': this.apiKey
       })
     }
-
     return this.http.get<List>(this.apiUrl, httpOptions);
+  }
+
+  public getContact(id: String): Observable<UserFull> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'app-id': this.apiKey
+      })
+    }
+    return this.http.get<UserFull>(this.apiUrl + "/" + id, httpOptions);
   }
 
 }

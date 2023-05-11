@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-// import { ContactsListComponent } from "./components/contacts-list-OLD/contacts-list.component";
-import { ContactsListPageModule} from "./pages/contacts-list/contacts-list.module";
 
 const routes: Routes = [
   {
@@ -12,6 +10,10 @@ const routes: Routes = [
   {
     path: 'contacts',
     loadChildren: () => import('./pages/contacts-list/contacts-list.module').then( m => m.ContactsListPageModule)
+  },
+  {
+    path: 'contact-detail/:id',
+    loadChildren: () => import('./pages/contact-detail/contact-detail.module').then( m => m.ContactDetailPageModule)
   },
 ];
 
