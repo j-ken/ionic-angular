@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { Observable, throwError } from 'rxjs';
+import {map, Observable, throwError} from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { List } from "../models/list.model";
 import { UserFull } from "../models/userFull.model";
@@ -11,26 +11,70 @@ import { UserFull } from "../models/userFull.model";
 export class ContactsService {
   private apiKey = '62a040dc29e7d125231500c1';
   private apiUrl = 'https://dummyapi.io/data/v1/user';
-  constructor(private http: HttpClient) { }
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'app-id': this.apiKey
+    })
+  }
+
+  constructor(
+    private http: HttpClient
+  ) { }
 
   public getContacts(): Observable<List> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'app-id': this.apiKey
-      })
-    }
-    return this.http.get<List>(this.apiUrl, httpOptions);
+    return this.http.get<List>(this.apiUrl, this.httpOptions)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Failed to get contacts:', error);
+          return throwError(error);
+        })
+      );
   }
 
   public getContact(id: String): Observable<UserFull> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'app-id': this.apiKey
-      })
-    }
-    return this.http.get<UserFull>(this.apiUrl + "/" + id, httpOptions);
+    return this.http.get<UserFull>(this.apiUrl + "/" + id, this.httpOptions);
   }
 
+  updateContact(contact: UserFull): Observable<UserFull> {
+    const updatedData = { ...contact };
+    console.log(updatedData)
+    // TODO: remove blank input fields
+    // TODO: remove email
+    // TODO: check if authorization needed (https://angular.io/guide/http#making-a-put-request)
+
+    return this.http.put<UserFull>(this.apiUrl + "/" + updatedData.id, updatedData, this.httpOptions)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Failed to update contact:', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  addContact(contact: UserFull): Observable<UserFull> {
+    if (contact.firstName && contact.lastName && contact.email) {
+      return this.http.post<UserFull>(this.apiUrl + "/create", contact, this.httpOptions)
+        .pipe(
+          catchError((error: any) => {
+            console.error('Failed to add contact:', error);
+            return throwError(error);
+          })
+        );
+    } else {
+      console.error('Failed to update contact: because of missing firstName, lastName or email');
+      return throwError('Missing required fields');
+    }
+  }
+
+  deleteContact(id: number): Observable<number> {
+    return this.http.delete<void>(this.apiUrl + "/" + id, this.httpOptions)
+      .pipe(
+        map(() => id), // Return the ID of the deleted user
+        catchError((error: any) => {
+          console.error('Failed to delete contact:', error);
+          return throwError(error);
+        })
+      );
+  }
 }

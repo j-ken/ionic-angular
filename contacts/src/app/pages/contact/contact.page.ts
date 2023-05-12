@@ -9,19 +9,26 @@ import { ContactsService } from "../../services/contacts.service";
   styleUrls: ['./contact.page.scss'],
 })
 export class ContactPage implements OnInit {
-  contactId: string | null = '';
+  id: string | null = '';
   // @ts-ignore
   contact: UserFull;
   readonly: Boolean = true;
+  editBtnLabel: String = 'Edit';
 
-  constructor(private activatedRoute: ActivatedRoute, private contactsService: ContactsService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private contactsService: ContactsService
+  ) { }
 
   ngOnInit() {
-    this.contactId = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    this.id = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
-    this.contactsService.getContact(this.contactId).subscribe((user) => {
+    this.contactsService.getContact(this.id).subscribe((user) => {
+      console.log(this.id)
+      console.log(user)
       this.contact = user;
     })
+
   }
 
   convertDateToString(date: String): String {
@@ -31,4 +38,25 @@ export class ContactPage implements OnInit {
     return dateString;
   }
 
+  toggleEditing() {
+    this.toggleReadOnly();
+    this.toggleEditBtnLabel();
+  }
+
+  toggleReadOnly() {
+    this.readonly = !this.readonly;
+  }
+
+  toggleEditBtnLabel() {
+    this.editBtnLabel = this.readonly ? 'Edit' : 'Cancel';
+  }
+
+  save() {
+    this.contactsService.updateContact(this.contact).subscribe(
+      updatedContact => {
+        console.log('Contact created successfully:', updatedContact);
+        this.toggleEditing();
+      },
+    )
+  }
 }
