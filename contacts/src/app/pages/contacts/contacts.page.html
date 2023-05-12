@@ -1,15 +1,18 @@
 <!--TODO: Add Route to "New"-->
 
-<ion-toolbar>
-  <ion-buttons slot="end">
-    <ion-button>New</ion-button>
-  </ion-buttons>
-  <ion-title class="center-title">Contacts</ion-title>
-</ion-toolbar>
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="center-title">Contacts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>New</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
   <ion-list lines="full">
     <ion-item *ngFor="let contact of contacts" [routerLink]="['/contact/', contact.id]" button detail="false">
+<!--      <ion-item *ngFor="let contact of contacts" [routerLink]="['/contact/', contact.id]" button detail="false">-->
       <ion-avatar slot="start">
         <img [src]="contact.picture" alt="Profile Picture">
       </ion-avatar>

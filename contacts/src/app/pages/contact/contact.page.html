@@ -1,20 +1,19 @@
-<!--TODO: add Back functionality-->
 <!--TODO: Create User: firstName, lastName, email are required -->
 <!--TODO: Update User: email is forbidden to update -->
 
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium">Back</ion-button>
+      <ion-button color="medium" routerLink="/contacts">Back</ion-button>
     </ion-buttons>
-    <ion-title>{{ contact.firstName }} {{ contact.lastName }}</ion-title>
+    <ion-title *ngIf="contact">{{ contact.firstName }} {{ contact.lastName }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="toggleEditing()" color="{{ readonly ? 'primary' : 'danger' }}">{{ editBtnLabel }}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" *ngIf="contact">
 
   <ion-avatar>
     <img [src]="contact.picture" />
