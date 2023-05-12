@@ -15,6 +15,11 @@ const routes: Routes = [
     path: 'contact/:id',
     loadChildren: () => import('./pages/contact/contact.module').then( m => m.ContactPageModule)
   },
+  // Todo: Fallback
+  // {
+  //   path: "**",
+  //   component: PageNotFoundComponent
+  // }
 ];
 
 @NgModule({
