@@ -4,11 +4,11 @@ import { UserFull } from "../../models/userFull.model";
 import { ContactsService } from "../../services/contacts.service";
 
 @Component({
-  selector: 'app-contact-detail',
-  templateUrl: './contact-detail.page.html',
-  styleUrls: ['./contact-detail.page.scss'],
+  selector: 'app-contact',
+  templateUrl: './contact.page.html',
+  styleUrls: ['./contact.page.scss'],
 })
-export class ContactDetailPage implements OnInit {
+export class ContactPage implements OnInit {
   contactId: string | null = '';
   // @ts-ignore
   contact: UserFull;

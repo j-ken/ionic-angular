@@ -12,8 +12,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/contacts-list/contacts-list.module').then( m => m.ContactsListPageModule)
   },
   {
-    path: 'contact-detail/:id',
-    loadChildren: () => import('./pages/contact-detail/contact-detail.module').then( m => m.ContactDetailPageModule)
+    path: 'contact/:id',
+    loadChildren: () => import('./pages/contact/contact.module').then( m => m.ContactPageModule)
   },
 ];
 
