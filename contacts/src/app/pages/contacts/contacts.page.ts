@@ -3,11 +3,11 @@ import { ContactsService } from "../../services/contacts.service";
 import { UserPreview } from "../../models/userPreview.model";
 
 @Component({
-  selector: 'app-contacts-list',
-  templateUrl: './contacts-list.page.html',
-  styleUrls: ['./contacts-list.page.scss'],
+  selector: 'app-contacts',
+  templateUrl: './contacts.page.html',
+  styleUrls: ['./contacts.page.scss'],
 })
-export class ContactsListPage implements OnInit {
+export class ContactsPage implements OnInit {
   contacts: UserPreview[] = [];
 
   constructor(private contactsService: ContactsService) { }

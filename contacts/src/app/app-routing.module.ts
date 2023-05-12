@@ -9,7 +9,7 @@ const routes: Routes = [
   },
   {
     path: 'contacts',
-    loadChildren: () => import('./pages/contacts-list/contacts-list.module').then( m => m.ContactsListPageModule)
+    loadChildren: () => import('./pages/contacts/contacts.module').then( m => m.ContactsPageModule)
   },
   {
     path: 'contact/:id',
