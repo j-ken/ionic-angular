@@ -1,8 +1,15 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>{{ contact.firstName }} {{ contact.lastName }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!--TODO: add Back functionality-->
+<!--TODO: Add Edit functionality-->
+
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button color="medium">Back</ion-button>
+  </ion-buttons>
+  <ion-title>{{ contact.firstName }} {{ contact.lastName }}</ion-title>
+  <ion-buttons slot="end">
+    <ion-button>Edit</ion-button>
+  </ion-buttons>
+</ion-toolbar>
 
 <ion-content [fullscreen]="true">
   <ion-avatar>

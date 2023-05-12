@@ -11,7 +11,7 @@ ion-input {
 ion-item {
   &.title-item {
     max-height: 30px;
-    --background: #d0d0d0;
+    --background: var(--ion-color-light-shade);
 
     ion-label {
       color: black;
