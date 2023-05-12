@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'contact/:id',
     loadChildren: () => import('./pages/contact/contact.module').then( m => m.ContactPageModule)
   },
+  {
+    path: 'new',
+    loadChildren: () => import('./pages/new-contact/new-contact.module').then( m => m.NewContactPageModule)
+  },
   // Todo: Fallback
   // {
   //   path: "**",
