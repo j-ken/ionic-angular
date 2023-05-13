@@ -20,8 +20,8 @@ component containing the form and taking contact as input (doc).-->
 
 <ion-content [fullscreen]="true" *ngIf="contact">
 
-  <!--  Form error message -->
-  <div *ngIf="postFailed" class="validation-errors">
+  <!-- Form error message -->
+  <div *ngIf="postFailed && !readonly" class="validation-errors">
     <p class="error-message">
       <ion-text *ngFor="let item of postFailedErrorMsg | keyvalue">
         <ion-text color="danger">
@@ -39,9 +39,10 @@ component containing the form and taking contact as input (doc).-->
 
   <form [formGroup]="contact">
 
-    <!--    title: string("mr", "ms", "mrs", "miss", "dr", "")-->
+    <!-- title: string("mr", "ms", "mrs", "miss", "dr", "") -->
     <ion-item lines="inset">
       <ion-label>Title</ion-label>
+      <!-- TODO: [disabled]="readonly" not working -->
       <ion-select formControlName="title" label="Title" [disabled]="readonly">
         <ion-select-option value="mr">Mr.</ion-select-option>
         <ion-select-option value="ms">Ms.</ion-select-option>
@@ -52,12 +53,12 @@ component containing the form and taking contact as input (doc).-->
       </ion-select>
     </ion-item>
 
-    <!--    firstName: string(length: 2-50)-->
+    <!-- firstName: string(length: 2-50) -->
     <ion-item lines="inset">
       <ion-label>First Name</ion-label>
-      <ion-input formControlName="firstName" label="First Name"></ion-input>
+      <ion-input formControlName="firstName" label="First Name" [readonly]="readonly"></ion-input>
     </ion-item>
-    <div class="validation-errors">
+    <div *ngIf="!readonly" class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.firstName">
         <p class="error-message"
            *ngIf="contact.get('firstName')?.hasError(validation.type) &&
@@ -67,12 +68,12 @@ component containing the form and taking contact as input (doc).-->
       </ng-container>
     </div>
 
-    <!--    lastName: string(length: 2-50)-->
+    <!-- lastName: string(length: 2-50) -->
     <ion-item lines="inset">
       <ion-label>Last Name</ion-label>
-      <ion-input formControlName="lastName" label="Last Name"></ion-input>
+      <ion-input formControlName="lastName" label="Last Name" [readonly]="readonly"></ion-input>
     </ion-item>
-    <div class="validation-errors">
+    <div *ngIf="!readonly" class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.lastName">
         <p class="error-message"
            *ngIf="contact.get('lastName')?.hasError(validation.type) &&
@@ -82,9 +83,10 @@ component containing the form and taking contact as input (doc).-->
       </ng-container>
     </div>
 
-    <!--    gender: string("male", "female", "other", "")-->
+    <!-- gender: string("male", "female", "other", "") -->
     <ion-item lines="inset">
       <ion-label>Gender</ion-label>
+      <!-- TODO: add readonly-->
       <ion-select formControlName="gender" label="Gender">
         <ion-select-option value="male">Male</ion-select-option>
         <ion-select-option value="female">Female</ion-select-option>
@@ -93,12 +95,12 @@ component containing the form and taking contact as input (doc).-->
       </ion-select>
     </ion-item>
 
-    <!--    email: string(email)-->
+    <!-- email: string(email) -->
     <ion-item lines="inset">
       <ion-label>Email</ion-label>
-      <ion-input formControlName="email" label="Email"></ion-input>
+      <ion-input formControlName="email" label="Email" [readonly]="readonly"></ion-input>
     </ion-item>
-    <div class="validation-errors">
+    <div *ngIf="!readonly" class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.email">
         <p class="error-message"
            *ngIf="contact.get('email')?.hasError(validation.type) &&
@@ -108,18 +110,18 @@ component containing the form and taking contact as input (doc).-->
       </ng-container>
     </div>
 
-    <!--    phone: string(phone number - any format)-->
+    <!-- phone: string(phone number - any format) -->
     <ion-item lines="inset">
       <ion-label>Phone number</ion-label>
-      <ion-input formControlName="phone" label="Phone number"></ion-input>
+      <ion-input formControlName="phone" label="Phone number" [readonly]="readonly"></ion-input>
     </ion-item>
 
-    <!--    dateOfBirth: string(ISO Date - value: 1/1/1900 - now)-->
+    <!-- dateOfBirth: string(ISO Date - value: 1/1/1900 - now) -->
     <ion-item lines="inset">
       <ion-label>Birthday</ion-label>
-      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="DD/MM/YYYY"></ion-input>
+      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="DD/MM/YYYY" [readonly]="readonly"></ion-input>
     </ion-item>
-    <div class="validation-errors">
+    <div *ngIf="!readonly" class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.dateOfBirth">
         <p class="error-message"
            *ngIf="contact.get('dateOfBirth')?.hasError(validation.type) &&
@@ -129,7 +131,7 @@ component containing the form and taking contact as input (doc).-->
       </ng-container>
     </div>
 
-    <!--    location: object(Location)-->
+    <!-- location: object(Location) -->
     <ion-item-group>
 
       <ion-item-divider>
@@ -140,9 +142,9 @@ component containing the form and taking contact as input (doc).-->
 
         <ion-item lines="inset">
           <ion-label>Street</ion-label>
-          <ion-input formControlName="street" label="Street"></ion-input>
+          <ion-input formControlName="street" label="Street" [readonly]="readonly"></ion-input>
         </ion-item>
-        <div *ngIf="validationMessages.street" class="validation-errors">
+        <div *ngIf="validationMessages.street && !readonly" class="validation-errors">
           <ng-container *ngFor="let validation of validationMessages.street">
             <p class="error-message"
                *ngIf="contact.get('street')?.hasError(validation.type) &&
@@ -154,9 +156,9 @@ component containing the form and taking contact as input (doc).-->
 
         <ion-item lines="inset">
           <ion-label>City</ion-label>
-          <ion-input formControlName="city" label="City"></ion-input>
+          <ion-input formControlName="city" label="City" [readonly]="readonly"></ion-input>
         </ion-item>
-        <div *ngIf="validationMessages.country" class="validation-errors">
+        <div *ngIf="validationMessages.country && !readonly" class="validation-errors">
           <ng-container *ngFor="let validation of validationMessages.city">
             <p class="error-message"
                *ngIf="contact.get('city')?.hasError(validation.type) &&
@@ -168,9 +170,9 @@ component containing the form and taking contact as input (doc).-->
 
         <ion-item lines="inset">
           <ion-label>Country</ion-label>
-          <ion-input formControlName="country" label="Country"></ion-input>
+          <ion-input formControlName="country" label="Country" [readonly]="readonly"></ion-input>
         </ion-item>
-        <div *ngIf="validationMessages.country" class="validation-errors">
+        <div *ngIf="validationMessages.country && !readonly" class="validation-errors">
           <ng-container *ngFor="let validation of validationMessages.country">
             <p class="error-message"
                *ngIf="contact.get('country')?.hasError(validation.type) &&
@@ -180,20 +182,21 @@ component containing the form and taking contact as input (doc).-->
           </ng-container>
         </div>
 
+        <!-- TODO: handle state & timezone -->
         <ion-item lines="inset" style="display: none">
           <ion-label>State</ion-label>
-          <ion-input formControlName="state" label="State"></ion-input>
+          <ion-input formControlName="state" label="State" [readonly]="readonly"></ion-input>
         </ion-item>
 
         <ion-item lines="inset" style="display: none">
           <ion-label>Timezone</ion-label>
-          <ion-input formControlName="timezone" label="Timezone"></ion-input>
+          <ion-input formControlName="timezone" label="Timezone" [readonly]="readonly"></ion-input>
         </ion-item>
 
       </ng-container>
     </ion-item-group>
 
-    <!--    picture: string(url)-->
+    <!-- picture: string(url) -->
     <ion-item-group>
       <ion-item-divider>
         <ion-label>Picture</ion-label>
@@ -201,7 +204,7 @@ component containing the form and taking contact as input (doc).-->
 
       <ion-item lines="inset">
         <ion-label>URL</ion-label>
-        <ion-input formControlName="picture" label="URL"></ion-input>
+        <ion-input formControlName="picture" label="URL" [readonly]="readonly"></ion-input>
       </ion-item>
 
     </ion-item-group>
