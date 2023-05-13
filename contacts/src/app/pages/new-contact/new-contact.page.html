@@ -23,11 +23,12 @@
 
   <form [formGroup]="contactForm">
 
-    <!--    TODO: picture: string(url)-->
-<!--    <ion-item lines="inset" style="display: none">-->
-<!--      <ion-label>Picture</ion-label>-->
-<!--      <ion-input formControlName="picture" label="Picture"></ion-input>-->
-<!--    </ion-item>-->
+    <!--    picture: string(url)-->
+    <!--    a string is expected, so i was not sure how to solve this other than with a simple input-->
+    <ion-item lines="inset">
+      <ion-label>Picture</ion-label>
+      <ion-input formControlName="picture" label="Picture" placeholder="Paste URL of picture"></ion-input>
+    </ion-item>
 
     <!--    title: string("mr", "ms", "mrs", "miss", "dr", "")-->
     <ion-item lines="inset">
