@@ -29,8 +29,15 @@
 // ---------------------------------------------------------------
 // Custom Global CSS
 
-ion-toolbar {
+ion-toolbar,
+ion-item-divider {
   --background: var(--ion-color-light-shade);
+}
+
+ion-item-divider {
+  font-weight: bold;
+  color: black;
+  max-height: 35px;
 }
 
 .center-title {
