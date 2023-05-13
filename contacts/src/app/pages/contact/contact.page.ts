@@ -68,12 +68,16 @@ export class ContactPage implements OnInit {
     this.editBtnLabel = this.readonly ? 'Edit' : 'Cancel';
   }
 
-  save() {
+  update() {
     this.contactsService.updateContact(this.contact).subscribe(
-      updatedContact => {
-        console.log('Contact created successfully:', updatedContact);
+      success => {
+        console.log('Contact created successfully:', success);
         this.toggleEditing();
       },
+      error => {
+        console.log(error)
+        // TODO: If something goes wrong when sending the request to the api, alert the user and stay in editing mode
+      }
     )
   }
 }
