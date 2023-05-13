@@ -42,7 +42,6 @@ component containing the form and taking contact as input (doc).-->
     <!-- title: string("mr", "ms", "mrs", "miss", "dr", "") -->
     <ion-item lines="inset">
       <ion-label>Title</ion-label>
-      <!-- TODO: [disabled]="readonly" not working -->
       <ion-select formControlName="title" label="Title" [disabled]="readonly">
         <ion-select-option value="mr">Mr.</ion-select-option>
         <ion-select-option value="ms">Ms.</ion-select-option>
@@ -86,8 +85,7 @@ component containing the form and taking contact as input (doc).-->
     <!-- gender: string("male", "female", "other", "") -->
     <ion-item lines="inset">
       <ion-label>Gender</ion-label>
-      <!-- TODO: add readonly-->
-      <ion-select formControlName="gender" label="Gender">
+      <ion-select formControlName="gender" label="Gender" [disabled]="readonly">
         <ion-select-option value="male">Male</ion-select-option>
         <ion-select-option value="female">Female</ion-select-option>
         <ion-select-option value="other">Other</ion-select-option>

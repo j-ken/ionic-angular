@@ -55,3 +55,9 @@ ion-avatar {
   margin: 0 16px;
 }
 
+form {
+  // undo disabled styling
+  .select-disabled, .item-select-disabled ion-label {
+    opacity: 1;
+  }
+}

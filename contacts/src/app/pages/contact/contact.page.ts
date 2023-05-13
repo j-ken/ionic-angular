@@ -68,10 +68,10 @@ export class ContactPage implements OnInit {
     this.contactsService.getContactById(this.id).subscribe((user) => {
       this.contact = new FormGroup({
         picture: new FormControl(user.picture),
-        title: new FormControl(user.picture),
+        title: new FormControl({ value: user.title, disabled: this.readonly }),
         firstName: new FormControl(user.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
         lastName: new FormControl(user.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-        gender: new FormControl(user.gender),
+        gender: new FormControl({ value: user.gender, disabled: this.readonly }),
         email: new FormControl(user.email, [Validators.required, Validators.email]),
         phone: new FormControl(user.phone),
         dateOfBirth: new FormControl(user.dateOfBirth, [birthdateValidator]),

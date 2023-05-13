@@ -38,9 +38,8 @@ export class ContactsService {
 
   updateContact(contact: UserFull): Observable<UserFull> {
     const updatedData = { ...contact };
-    console.log(updatedData)
-    // TODO: remove blank input fields
-    // TODO: remove email
+    console.log("updateContact updatedData", updatedData)
+    // TODO: dont update email
     // TODO: check if authorization needed (https://angular.io/guide/http#making-a-put-request)
 
     return this.http.put<UserFull>(this.apiUrl + "/" + updatedData.id, updatedData, this.httpOptions)
