@@ -67,7 +67,7 @@ export class ContactsService {
     }
   }
 
-  deleteContact(id: number): Observable<number> {
+  deleteContact(id: string): Observable<string> {
     return this.http.delete<void>(this.apiUrl + "/" + id, this.httpOptions)
       .pipe(
         map(() => id), // Return the ID of the deleted user

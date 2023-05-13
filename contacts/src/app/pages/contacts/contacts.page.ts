@@ -34,4 +34,14 @@ export class ContactsPage implements OnInit {
     }
   }
 
+  deleteUser(id: string) {
+    this.contactsService.deleteContact(id).subscribe(
+      success => {
+        this.contacts = this.contacts.filter(contact => contact.id !== id);
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
 }
