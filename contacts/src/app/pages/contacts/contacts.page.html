@@ -12,8 +12,10 @@
     <ion-item *ngFor="let contact of contacts" [routerLink]="['/contact/', contact.id]" button detail="false">
 <!--      <ion-item *ngFor="let contact of contacts" [routerLink]="['/contact/', contact.id]" button detail="false">-->
       <ion-avatar slot="start">
-        <img [src]="contact.picture" alt="Profile Picture">
+        <img *ngIf="contact.picture" [src]="contact.picture">
+        <img *ngIf="!contact.picture" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
       </ion-avatar>
+
       <ion-label>
         <h2>{{ contact.title }} {{ contact.firstName }} {{ contact.lastName }}</h2>
       </ion-label>

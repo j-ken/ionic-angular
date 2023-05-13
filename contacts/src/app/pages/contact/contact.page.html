@@ -15,8 +15,9 @@
 
 <ion-content [fullscreen]="true" *ngIf="contact">
 
-  <ion-avatar>
-    <img [src]="contact.picture" />
+  <ion-avatar *ngIf="contact.picture">
+    <img *ngIf="contact.picture" [src]="contact.picture" />
+    <img *ngIf="!contact.picture" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
   </ion-avatar>
 
   <ion-list>
@@ -42,6 +43,7 @@
       <ion-input label="Birthday" [value]="convertDateToString(contact.dateOfBirth)" [readonly]="readonly"></ion-input>
     </ion-item>
 
+<!--    TODO: change title according to: https://ionicframework.com/docs/api/item-group-->
     <ion-item class="title-item">
       <ion-label>Address</ion-label>
     </ion-item>

@@ -2,15 +2,193 @@
   <ion-toolbar>
     <ion-title class="center-title">New Contact</ion-title>
     <ion-buttons slot="end">
-      <ion-button>Cancel</ion-button>
+      <ion-button routerLink="/contacts">Cancel</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">newContact dfdd</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <!--  Form error message-->
+  <div *ngIf="postFailed" class="validation-errors">
+      <p class="error-message">
+<!--        <ion-text color="danger">Something went wrong, please try sending the form again.</ion-text>-->
+        <ion-text color="danger">{{ postFailedErrorMsg }}</ion-text>
+
+<!--        /TODO: loop through errors -->
+<!--      <ion-text *ngFor="let item of postFailedErrorMsg | keyvalue">-->
+<!--        Key: <b>{{item.key}}</b> and Value: <b>{{item.value}}</b>-->
+<!--      </ion-text>-->
+
+      </p>
+  </div>
+
+  <form [formGroup]="contactForm">
+
+    <!--    TODO: picture: string(url)-->
+<!--    <ion-item lines="inset" style="display: none">-->
+<!--      <ion-label>Picture</ion-label>-->
+<!--      <ion-input formControlName="picture" label="Picture"></ion-input>-->
+<!--    </ion-item>-->
+
+    <!--    title: string("mr", "ms", "mrs", "miss", "dr", "")-->
+    <ion-item lines="inset">
+      <ion-label>Title</ion-label>
+      <ion-select formControlName="title" label="Title">
+        <ion-select-option value="mr">Mr.</ion-select-option>
+        <ion-select-option value="ms">Ms.</ion-select-option>
+        <ion-select-option value="mrs">Mrs.</ion-select-option>
+        <ion-select-option value="miss">Miss</ion-select-option>
+        <ion-select-option value="dr">Dr.</ion-select-option>
+        <ion-select-option value="">(no info)</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!--    firstName: string(length: 2-50)-->
+    <ion-item lines="inset">
+      <ion-label>First Name</ion-label>
+      <ion-input formControlName="firstName" label="First Name"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.firstName">
+        <p class="error-message"
+           *ngIf="contactForm.get('firstName')?.hasError(validation.type) &&
+                (contactForm.get('firstName')?.dirty || contactForm.get('firstName')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    lastName: string(length: 2-50)-->
+    <ion-item lines="inset">
+      <ion-label>Last Name</ion-label>
+      <ion-input formControlName="lastName" label="Last Name"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.lastName">
+        <p class="error-message"
+           *ngIf="contactForm.get('lastName')?.hasError(validation.type) &&
+                (contactForm.get('lastName')?.dirty || contactForm.get('lastName')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    gender: string("male", "female", "other", "")-->
+    <ion-item lines="inset">
+      <ion-label>Gender</ion-label>
+      <ion-select formControlName="gender"  label="Gender">
+        <ion-select-option value="male">Male</ion-select-option>
+        <ion-select-option value="female">Female</ion-select-option>
+        <ion-select-option value="other">Other</ion-select-option>
+<!--        <ion-select-option value="">(no info)</ion-select-option>-->
+      </ion-select>
+    </ion-item>
+
+    <!--    email: string(email)-->
+    <ion-item lines="inset">
+      <ion-label>Email</ion-label>
+      <ion-input formControlName="email" label="Email"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.email">
+        <p class="error-message"
+           *ngIf="contactForm.get('email')?.hasError(validation.type) &&
+                (contactForm.get('email')?.dirty || contactForm.get('email')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    phone: string(phone number - any format)-->
+    <ion-item lines="inset">
+      <ion-label>Phone number</ion-label>
+      <ion-input formControlName="phone" label="Phone number"></ion-input>
+    </ion-item>
+
+    <!--    dateOfBirth: string(ISO Date - value: 1/1/1900 - now)-->
+    <ion-item lines="inset">
+      <ion-label>Birthday</ion-label>
+      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="DD/MM/YYYY"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.dateOfBirth">
+        <p class="error-message"
+           *ngIf="contactForm.get('dateOfBirth')?.hasError(validation.type) &&
+            (contactForm.get('dateOfBirth')?.dirty || contactForm.get('dateOfBirth')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    location: object(Location)-->
+    <ion-item-group>
+      <ng-container formArrayName="location">
+
+        <ion-item lines="inset">
+          <ion-label>Street</ion-label>
+          <ion-input formControlName="street" label="Street"></ion-input>
+        </ion-item>
+        <div *ngIf="validationMessages.street" class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.street">
+            <p class="error-message"
+               *ngIf="contactForm.get('street')?.hasError(validation.type) &&
+                (contactForm.get('street')?.dirty || contactForm.get('street')?.touched)">
+              <ion-text color="danger">{{ validation.message }}</ion-text>
+            </p>
+          </ng-container>
+        </div>
+
+        <ion-item lines="inset">
+          <ion-label>City</ion-label>
+          <ion-input formControlName="city" label="City"></ion-input>
+        </ion-item>
+        <div *ngIf="validationMessages.country" class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.city">
+            <p class="error-message"
+               *ngIf="contactForm.get('city')?.hasError(validation.type) &&
+                (contactForm.get('city')?.dirty || contactForm.get('city')?.touched)">
+              <ion-text color="danger">{{ validation.message }}</ion-text>
+            </p>
+          </ng-container>
+        </div>
+
+        <ion-item lines="inset">
+          <ion-label>Country</ion-label>
+          <ion-input formControlName="country" label="Country"></ion-input>
+        </ion-item>
+        <div *ngIf="validationMessages.country" class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.country">
+            <p class="error-message"
+               *ngIf="contactForm.get('country')?.hasError(validation.type) &&
+                (contactForm.get('country')?.dirty || contactForm.get('country')?.touched)">
+              <ion-text color="danger">{{ validation.message }}</ion-text>
+            </p>
+          </ng-container>
+        </div>
+
+        <ion-item lines="inset" style="display: none">
+          <ion-label>State</ion-label>
+          <ion-input formControlName="state" label="State"></ion-input>
+        </ion-item>
+
+        <ion-item lines="inset" style="display: none">
+          <ion-label>Timezone</ion-label>
+          <ion-input formControlName="timezone" label="Timezone"></ion-input>
+        </ion-item>
+
+      </ng-container>
+    </ion-item-group>
+
+  </form>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+<!--      TODO: form validation does not work properly, so i'm turning off the check-->
+<!--      <ion-button type="submit" [disabled]="!contactForm.valid" (click)="save()">Save</ion-button>-->
+      <ion-button type="submit" (click)="save()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -32,6 +32,7 @@ export class ContactPage implements OnInit {
   }
 
   convertDateToString(date: String): String {
+    if (!date) return '';
     const d = new Date(date as string);
     // https://stackoverflow.com/questions/11591854/format-date-to-mm-dd-yyyy-in-javascript
     const dateString = ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate()))  + '/' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))) + '/' + d.getFullYear();
