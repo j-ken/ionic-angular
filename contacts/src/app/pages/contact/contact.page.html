@@ -1,17 +1,17 @@
-<!--TODO: Create User: firstName, lastName, email are required -->
 <!--TODO: Update User: email is forbidden to update -->
 
 <!--TODO: The form to edit or create a contact should be the same. The only difference is that
 in the case of an edit, you can prefill the form with the contact data. Create a reusable
 component containing the form and taking contact as input (doc).-->
 
+<!--TODO: If a field is missing in the contact object, make sure it is not displayed in the view.-->
 
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button color="medium" routerLink="/contacts">Back</ion-button>
     </ion-buttons>
-    <ion-title *ngIf="contact">{{ contact.firstName }} {{ contact.lastName }}</ion-title>
+    <ion-title *ngIf="contact">{{ contact.get('firstName')?.value }} {{ contact.get('lastName')?.value }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="toggleEditing()" color="{{ readonly ? 'primary' : 'danger' }}">{{ editBtnLabel }}</ion-button>
     </ion-buttons>
@@ -20,58 +20,193 @@ component containing the form and taking contact as input (doc).-->
 
 <ion-content [fullscreen]="true" *ngIf="contact">
 
-  <ion-avatar *ngIf="contact.picture">
-    <img *ngIf="contact.picture" [src]="contact.picture" />
-    <img *ngIf="!contact.picture" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
+  <!--  Form error message -->
+  <div *ngIf="postFailed" class="validation-errors">
+    <p class="error-message">
+      <ion-text *ngFor="let item of postFailedErrorMsg | keyvalue">
+        <ion-text color="danger">
+          Form error: <br>
+          {{item.value}}
+        </ion-text>
+      </ion-text>
+    </p>
+  </div>
+
+  <ion-avatar>
+    <img *ngIf="contact.get('picture')?.value" [src]="contact.get('picture')?.value" />
+    <img *ngIf="!contact.get('picture')?.value" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
   </ion-avatar>
 
-  <ion-list>
-    <ion-item>
-      <ion-input label="Title" value="{{ contact.title }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="First Name" value="{{ contact.firstName }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="Last Name" value="{{ contact.lastName }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="Gender" value="{{ contact.gender }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="Email" type="email" value="{{ contact.email }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="Phone number" type="number" value="{{ contact.phone }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="Birthday" [value]="convertDateToString(contact.dateOfBirth)" [readonly]="readonly"></ion-input>
+  <form [formGroup]="contact">
+
+    <!--    title: string("mr", "ms", "mrs", "miss", "dr", "")-->
+    <ion-item lines="inset">
+      <ion-label>Title</ion-label>
+      <ion-select formControlName="title" label="Title" [disabled]="readonly">
+        <ion-select-option value="mr">Mr.</ion-select-option>
+        <ion-select-option value="ms">Ms.</ion-select-option>
+        <ion-select-option value="mrs">Mrs.</ion-select-option>
+        <ion-select-option value="miss">Miss</ion-select-option>
+        <ion-select-option value="dr">Dr.</ion-select-option>
+        <ion-select-option value=""></ion-select-option>
+      </ion-select>
     </ion-item>
 
-<!--    TODO: change title according to: https://ionicframework.com/docs/api/item-group-->
-    <ion-item class="title-item">
-      <ion-label>Address</ion-label>
+    <!--    firstName: string(length: 2-50)-->
+    <ion-item lines="inset">
+      <ion-label>First Name</ion-label>
+      <ion-input formControlName="firstName" label="First Name"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.firstName">
+        <p class="error-message"
+           *ngIf="contact.get('firstName')?.hasError(validation.type) &&
+                (contact.get('firstName')?.dirty || contact.get('firstName')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    lastName: string(length: 2-50)-->
+    <ion-item lines="inset">
+      <ion-label>Last Name</ion-label>
+      <ion-input formControlName="lastName" label="Last Name"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.lastName">
+        <p class="error-message"
+           *ngIf="contact.get('lastName')?.hasError(validation.type) &&
+                (contact.get('lastName')?.dirty || contact.get('lastName')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    gender: string("male", "female", "other", "")-->
+    <ion-item lines="inset">
+      <ion-label>Gender</ion-label>
+      <ion-select formControlName="gender" label="Gender">
+        <ion-select-option value="male">Male</ion-select-option>
+        <ion-select-option value="female">Female</ion-select-option>
+        <ion-select-option value="other">Other</ion-select-option>
+        <ion-select-option value=""></ion-select-option>
+      </ion-select>
     </ion-item>
 
-    <ion-item>
-      <ion-input label="Street" value="{{ contact.location.street }}" [readonly]="readonly"></ion-input>
+    <!--    email: string(email)-->
+    <ion-item lines="inset">
+      <ion-label>Email</ion-label>
+      <ion-input formControlName="email" label="Email"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-input label="City" value="{{ contact.location.city }}" [readonly]="readonly"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input label="Country" value="{{ contact.location.country }}" [readonly]="readonly"></ion-input>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.email">
+        <p class="error-message"
+           *ngIf="contact.get('email')?.hasError(validation.type) &&
+                (contact.get('email')?.dirty || contact.get('email')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
+
+    <!--    phone: string(phone number - any format)-->
+    <ion-item lines="inset">
+      <ion-label>Phone number</ion-label>
+      <ion-input formControlName="phone" label="Phone number"></ion-input>
     </ion-item>
 
-    <ion-item class="title-item">
-      <ion-label>Picture</ion-label>
+    <!--    dateOfBirth: string(ISO Date - value: 1/1/1900 - now)-->
+    <ion-item lines="inset">
+      <ion-label>Birthday</ion-label>
+      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="DD/MM/YYYY"></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.dateOfBirth">
+        <p class="error-message"
+           *ngIf="contact.get('dateOfBirth')?.hasError(validation.type) &&
+            (contact.get('dateOfBirth')?.dirty || contact.get('dateOfBirth')?.touched)">
+          <ion-text color="danger">{{ validation.message }}</ion-text>
+        </p>
+      </ng-container>
+    </div>
 
-    <ion-item text-wrap class="url">
-      <ion-input label="URL" value="{{ contact.picture }}" [readonly]="readonly"></ion-input>
-    </ion-item>
+    <!--    location: object(Location)-->
+    <ion-item-group>
 
-  </ion-list>
+      <ion-item-divider>
+        <ion-label>Address</ion-label>
+      </ion-item-divider>
+
+      <ng-container formArrayName="location">
+
+        <ion-item lines="inset">
+          <ion-label>Street</ion-label>
+          <ion-input formControlName="street" label="Street"></ion-input>
+        </ion-item>
+        <div *ngIf="validationMessages.street" class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.street">
+            <p class="error-message"
+               *ngIf="contact.get('street')?.hasError(validation.type) &&
+                (contact.get('street')?.dirty || contact.get('street')?.touched)">
+              <ion-text color="danger">{{ validation.message }}</ion-text>
+            </p>
+          </ng-container>
+        </div>
+
+        <ion-item lines="inset">
+          <ion-label>City</ion-label>
+          <ion-input formControlName="city" label="City"></ion-input>
+        </ion-item>
+        <div *ngIf="validationMessages.country" class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.city">
+            <p class="error-message"
+               *ngIf="contact.get('city')?.hasError(validation.type) &&
+                (contact.get('city')?.dirty || contact.get('city')?.touched)">
+              <ion-text color="danger">{{ validation.message }}</ion-text>
+            </p>
+          </ng-container>
+        </div>
+
+        <ion-item lines="inset">
+          <ion-label>Country</ion-label>
+          <ion-input formControlName="country" label="Country"></ion-input>
+        </ion-item>
+        <div *ngIf="validationMessages.country" class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.country">
+            <p class="error-message"
+               *ngIf="contact.get('country')?.hasError(validation.type) &&
+                (contact.get('country')?.dirty || contact.get('country')?.touched)">
+              <ion-text color="danger">{{ validation.message }}</ion-text>
+            </p>
+          </ng-container>
+        </div>
+
+        <ion-item lines="inset" style="display: none">
+          <ion-label>State</ion-label>
+          <ion-input formControlName="state" label="State"></ion-input>
+        </ion-item>
+
+        <ion-item lines="inset" style="display: none">
+          <ion-label>Timezone</ion-label>
+          <ion-input formControlName="timezone" label="Timezone"></ion-input>
+        </ion-item>
+
+      </ng-container>
+    </ion-item-group>
+
+    <!--    picture: string(url)-->
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Picture</ion-label>
+      </ion-item-divider>
+
+      <ion-item lines="inset">
+        <ion-label>URL</ion-label>
+        <ion-input formControlName="picture" label="URL"></ion-input>
+      </ion-item>
+
+    </ion-item-group>
+
+  </form>
 </ion-content>
 
 <ion-footer *ngIf="!readonly">

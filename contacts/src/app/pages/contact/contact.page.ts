@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserFull } from "../../models/userFull.model";
 import { ContactsService } from "../../services/contacts.service";
-// import { NewUserFullService } from "../../services/new-user-full.service";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { birthdateValidator } from "../new-contact/new-contact.page";
 
 @Component({
   selector: 'app-contact',
@@ -11,20 +12,51 @@ import { ContactsService } from "../../services/contacts.service";
 })
 export class ContactPage implements OnInit {
   id: string | null = '';
-  // @ts-ignore
-  contact: UserFull;
-  readonly: Boolean = true;
-  editBtnLabel: String = 'Edit';
+  contact: FormGroup;
+  readonly: boolean = true;
+  editBtnLabel: string = 'Edit';
+  postFailed: boolean = false;
+  postFailedErrorMsg: Record<string, any>;
+  validationMessages = {
+    'firstName': [
+      { type: 'required', message: 'Input is required.' },
+      { type: 'minlength', message: 'Input must be at least 2 characters long.' },
+      { type: 'maxlength', message: 'Input cannot be more than 50 characters long.' },
+    ],
+    'lastName': [
+      { type: 'required', message: 'Input is required.' },
+      { type: 'minlength', message: 'Input must be at least 2 characters long.' },
+      { type: 'maxlength', message: 'Input cannot be more than 50 characters long.' },
+    ],
+    'email': [
+      { type: 'required', message: 'Email is required.' },
+      { type: 'email', message: 'Please enter a valid email address.' },
+    ],
+    'dateOfBirth': [
+      { type: 'invalidBirthdate', message: 'Please enter a valid date in the format DD/MM/YYYY.' },
+      { type: 'outOfRange', message: 'Birthday must be between 01/01/1900 and today.' }
+    ],
+    'street': [
+      { type: 'minlength', message: 'Street must be at least 5 characters long.' },
+      { type: 'maxlength', message: 'Street cannot be more than 100 characters long.' }
+    ],
+    'city': [
+      { type: 'minlength', message: 'City must be at least 2 characters long.' },
+      { type: 'maxlength', message: 'City cannot be more than 30 characters long.' }
+    ],
+    'country': [
+      { type: 'minlength', message: 'Country must be at least 2 characters long.' },
+      { type: 'maxlength', message: 'Country cannot be more than 30 characters long.' }
+    ],
+  };
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private contactsService: ContactsService,
-    // private newUserFullService: NewUserFullService,
   ) { }
 
   ngOnInit() {
     this.getId();
-    // this.getUserFromFullService();
     this.getUserFromApi();
   }
 
@@ -34,18 +66,25 @@ export class ContactPage implements OnInit {
 
   getUserFromApi() {
     this.contactsService.getContactById(this.id).subscribe((user) => {
-      this.contact = user;
+      this.contact = new FormGroup({
+        picture: new FormControl(user.picture),
+        title: new FormControl(user.picture),
+        firstName: new FormControl(user.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+        lastName: new FormControl(user.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+        gender: new FormControl(user.gender),
+        email: new FormControl(user.email, [Validators.required, Validators.email]),
+        phone: new FormControl(user.phone),
+        dateOfBirth: new FormControl(user.dateOfBirth, [birthdateValidator]),
+        location: new FormGroup({
+          street: new FormControl(user.location.street, [Validators.minLength(5), Validators.maxLength(100)]),
+          city: new FormControl(user.location.city, [Validators.minLength(2), Validators.maxLength(30)]),
+          state: new FormControl(user.location.state, [Validators.minLength(2), Validators.maxLength(30)]),
+          country: new FormControl(user.location.country, [Validators.minLength(2), Validators.maxLength(30)]),
+          timezone: new FormControl(user.location.timezone)
+        })
+      });
     })
   }
-
-  // getUserFromFullService() {
-  //   // retrieve the updated user from the shared service
-  //   const newUserFull = this.newUserFullService.getNewUserFullById(this.id);
-  //   if (newUserFull) {
-  //     this.contact = newUserFull;
-  //   }
-  //   console.log("getUserFromFullService this.contact ", this.contact)
-  // }
 
   convertDateToString(date: String): String {
     if (!date) return '';
@@ -69,7 +108,27 @@ export class ContactPage implements OnInit {
   }
 
   update() {
-    this.contactsService.updateContact(this.contact).subscribe(
+    const updatedUser: UserFull = {
+      id: this.contact.value.id,
+      title: this.contact.value.title,
+      firstName: this.contact.value.firstName,
+      lastName: this.contact.value.lastName,
+      gender: this.contact.value.gender,
+      email: this.contact.value.email,
+      dateOfBirth: this.contact.value.dateOfBirth,
+      registerDate: this.contact.value.registerDate,
+      phone: this.contact.value.phone,
+      picture: this.contact.value.picture,
+      location: {
+        street: this.contact.value.location.street,
+        city: this.contact.value.location.city,
+        state: this.contact.value.state,
+        country: this.contact.value.location.country,
+        timezone: this.contact.value.timezone
+      }
+    };
+
+    this.contactsService.updateContact(updatedUser).subscribe(
       success => {
         console.log('Contact created successfully:', success);
         this.toggleEditing();
