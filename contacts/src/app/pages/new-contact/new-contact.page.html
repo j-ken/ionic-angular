@@ -9,17 +9,15 @@
 
 <ion-content [fullscreen]="true">
 
-  <!--  Form error message-->
+  <!--  Form error message -->
   <div *ngIf="postFailed" class="validation-errors">
       <p class="error-message">
-<!--        <ion-text color="danger">Something went wrong, please try sending the form again.</ion-text>-->
-        <ion-text color="danger">{{ postFailedErrorMsg }}</ion-text>
-
-<!--        /TODO: loop through errors -->
-<!--      <ion-text *ngFor="let item of postFailedErrorMsg | keyvalue">-->
-<!--        Key: <b>{{item.key}}</b> and Value: <b>{{item.value}}</b>-->
-<!--      </ion-text>-->
-
+        <ion-text *ngFor="let item of postFailedErrorMsg | keyvalue">
+          <ion-text color="danger">
+            Form error: <br>
+            {{item.value}}
+          </ion-text>
+        </ion-text>
       </p>
   </div>
 
@@ -40,7 +38,7 @@
         <ion-select-option value="mrs">Mrs.</ion-select-option>
         <ion-select-option value="miss">Miss</ion-select-option>
         <ion-select-option value="dr">Dr.</ion-select-option>
-        <ion-select-option value="">(no info)</ion-select-option>
+        <ion-select-option value=""></ion-select-option>
       </ion-select>
     </ion-item>
 
@@ -77,11 +75,11 @@
     <!--    gender: string("male", "female", "other", "")-->
     <ion-item lines="inset">
       <ion-label>Gender</ion-label>
-      <ion-select formControlName="gender"  label="Gender">
+      <ion-select formControlName="gender" label="Gender">
         <ion-select-option value="male">Male</ion-select-option>
         <ion-select-option value="female">Female</ion-select-option>
         <ion-select-option value="other">Other</ion-select-option>
-<!--        <ion-select-option value="">(no info)</ion-select-option>-->
+        <ion-select-option value=""></ion-select-option>
       </ion-select>
     </ion-item>
 

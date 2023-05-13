@@ -57,7 +57,7 @@ export function birthdateValidator(control: AbstractControl): ValidationErrors |
 export class NewContactPage implements OnInit {
   contactForm: FormGroup;
   postFailed: boolean = false;
-  postFailedErrorMsg: Object = {};
+  postFailedErrorMsg: Record<string, any>;
   validationMessages = {
     // https://ionicthemes.com/tutorials/forms-and-validation-in-ionic
     'firstName': [
@@ -167,7 +167,6 @@ export class NewContactPage implements OnInit {
       error => {
         // inform the user that something went wrong
         this.postFailed = true;
-        console.log("error", error.error.data)
         this.postFailedErrorMsg = error.error.data;
       }
     );
