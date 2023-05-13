@@ -11,7 +11,8 @@ import { UserFull } from "../../models/userFull.model";
 import { ContactsService } from "../../services/contacts.service";
 import * as moment from "moment";
 import { Router } from '@angular/router';
-import { NewUserService } from "../../services/new-user.service";
+import { NewUserPreviewService } from "../../services/new-user-preview.service";
+// import { NewUserFullService } from "../../services/new-user-full.service";
 
 // TODO: customValidator not working
 export function customValidator(): ValidatorFn {
@@ -94,7 +95,8 @@ export class NewContactPage implements OnInit {
 
   constructor(
     private contactsService: ContactsService,
-    private newUserService: NewUserService,
+    private newUserPreviewService: NewUserPreviewService,
+    // private newUserFullService: NewUserFullService,
     private router: Router,
   ) { }
 
@@ -133,8 +135,6 @@ export class NewContactPage implements OnInit {
 
 
   save() {
-    console.log("save")
-
     // TODO: form validation does not work properly, so i'm turning off the check
     // if (this.contactForm.invalid) {
     //   return;
@@ -166,7 +166,11 @@ export class NewContactPage implements OnInit {
       success => {
         this.postFailed = false;
         this.postFailedErrorMsg = {};
-        this.newUserService.setNewUser(newUser);
+
+        // add ID from API response to newUser
+        newUser.id = success.id;
+        this.newUserPreviewService.setNewUser(newUser);
+        // this.newUserFullService.addNewUserFull(newUser);
         this.router.navigate(['contacts']);
       },
       error => {

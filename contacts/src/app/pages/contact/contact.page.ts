@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserFull } from "../../models/userFull.model";
 import { ContactsService } from "../../services/contacts.service";
+// import { NewUserFullService } from "../../services/new-user-full.service";
 
 @Component({
   selector: 'app-contact',
@@ -17,19 +18,34 @@ export class ContactPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
+    // private newUserFullService: NewUserFullService,
   ) { }
 
   ngOnInit() {
-    this.id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    this.getId();
+    // this.getUserFromFullService();
+    this.getUserFromApi();
+  }
 
-    this.contactsService.getContact(this.id).subscribe((user) => {
-      console.log(this.id)
-      console.log(user)
+  getId() {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+  }
+
+  getUserFromApi() {
+    this.contactsService.getContactById(this.id).subscribe((user) => {
       this.contact = user;
     })
-
   }
+
+  // getUserFromFullService() {
+  //   // retrieve the updated user from the shared service
+  //   const newUserFull = this.newUserFullService.getNewUserFullById(this.id);
+  //   if (newUserFull) {
+  //     this.contact = newUserFull;
+  //   }
+  //   console.log("getUserFromFullService this.contact ", this.contact)
+  // }
 
   convertDateToString(date: String): String {
     if (!date) return '';

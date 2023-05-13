@@ -4,7 +4,7 @@ import { UserPreview } from "../models/userPreview.model";
 @Injectable({
   providedIn: 'root'
 })
-export class NewUserService {
+export class NewUserPreviewService {
   private newUser: UserPreview | null;
 
   constructor() { }

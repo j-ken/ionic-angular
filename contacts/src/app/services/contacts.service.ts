@@ -32,7 +32,7 @@ export class ContactsService {
       );
   }
 
-  public getContact(id: String): Observable<UserFull> {
+  public getContactById(id: String | null): Observable<UserFull> {
     return this.http.get<UserFull>(this.apiUrl + "/" + id, this.httpOptions);
   }
 
