@@ -10,6 +10,8 @@ import { NewUserPreviewService } from "../../services/new-user-preview.service";
 })
 export class ContactsPage implements OnInit {
   contacts: UserPreview[] = [];
+  isAlertOpen = false;
+  userToBeDeleted: UserPreview;
 
   constructor(
     private contactsService: ContactsService,
@@ -44,4 +46,31 @@ export class ContactsPage implements OnInit {
       }
     )
   }
+
+  showDeleteAlert(isOpen: boolean, user: UserPreview) {
+    this.isAlertOpen = isOpen;
+    this.userToBeDeleted = user;
+    console.log("id: " + this.userToBeDeleted.id)
+  }
+  setAlertOpen(isOpen: boolean) {
+    this.isAlertOpen = isOpen;
+  }
+
+  public alertButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        this.setAlertOpen(false);
+      },
+    },
+    {
+      text: 'OK',
+      role: 'confirm',
+      handler: () => {
+        this.deleteUser(this.userToBeDeleted.id);
+      },
+    },
+  ];
+
 }
