@@ -102,6 +102,11 @@ export class NewContactPage implements OnInit {
     this.initContactForm();
   }
 
+  ionViewWillEnter() {
+    // clear form
+    this.initContactForm();
+  }
+
   initContactForm() {
     this.contactForm = new FormGroup({
       picture: new FormControl(''),
