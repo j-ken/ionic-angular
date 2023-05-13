@@ -21,14 +21,12 @@
       </p>
   </div>
 
-  <form [formGroup]="contactForm">
+  <ion-avatar>
+    <img *ngIf="contactForm.get('picture')?.value" [src]="contactForm.get('picture')?.value" />
+    <img *ngIf="!contactForm.get('picture')?.value" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
+  </ion-avatar>
 
-    <!--    picture: string(url)-->
-    <!--    a string is expected, so i was not sure how to solve this other than with a simple input-->
-    <ion-item lines="inset">
-      <ion-label>Picture</ion-label>
-      <ion-input formControlName="picture" label="Picture" placeholder="Paste URL of picture"></ion-input>
-    </ion-item>
+  <form [formGroup]="contactForm">
 
     <!--    title: string("mr", "ms", "mrs", "miss", "dr", "")-->
     <ion-item lines="inset">
@@ -182,6 +180,19 @@
         </ion-item>
 
       </ng-container>
+    </ion-item-group>
+
+    <!--    picture: string(url)-->
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Picture</ion-label>
+      </ion-item-divider>
+
+      <ion-item lines="inset">
+        <ion-label>URL</ion-label>
+        <ion-input formControlName="picture" label="URL"></ion-input>
+      </ion-item>
+
     </ion-item-group>
 
   </form>
