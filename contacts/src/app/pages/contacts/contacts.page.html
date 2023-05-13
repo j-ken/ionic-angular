@@ -36,7 +36,7 @@
   <ion-alert
     [isOpen]="isAlertOpen"
     header="Confirm Delete"
-    [message]="'Are you sure you want to delete ' + (userToBeDeleted?.firstName || 'this user') + ' ' + (userToBeDeleted?.lastName || '') + '?'"
+    [message]="'Are you sure you want to delete ' + (userToBeDeleted && userToBeDeleted.firstName || 'this user') + ' ' + (userToBeDeleted && userToBeDeleted.lastName || '') + '?'"
     [buttons]="alertButtons"
     (didDismiss)="setAlertOpen(false)"
   ></ion-alert>
