@@ -150,7 +150,9 @@ export class ContactPage implements OnInit {
         this.toggleEditing();
       },
       error => {
-        // TODO: If something goes wrong when sending the request to the api, alert the user and stay in editing mode
+        // inform the user that something went wrong
+        this.postFailed = true;
+        this.postFailedErrorMsg = error.error.data;
       }
     )
   }
