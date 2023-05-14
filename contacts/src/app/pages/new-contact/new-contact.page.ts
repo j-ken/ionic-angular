@@ -32,6 +32,7 @@ export function customValidator(): ValidatorFn {
 
 export function birthdateValidator(control: AbstractControl): ValidationErrors | null {
   const birthdate = control.value;
+  if (!birthdate) return null;
   const isValid = moment(birthdate, "YYYY/MM/DD", true).isValid();
 
   if (!isValid) {
