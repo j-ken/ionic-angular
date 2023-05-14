@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { NewContactPageRoutingModule } from './new-contact-routing.module';
 import { NewContactPage } from './new-contact.page';
+import { SharedModule } from "../../component/shared.module";
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { NewContactPage } from './new-contact.page';
     FormsModule,
     IonicModule,
     NewContactPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [NewContactPage]
 })
