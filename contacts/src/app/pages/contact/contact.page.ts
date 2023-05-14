@@ -11,7 +11,7 @@ import { birthdateValidator } from "../new-contact/new-contact.page";
   styleUrls: ['./contact.page.scss'],
 })
 export class ContactPage implements OnInit {
-  id: string | null = '';
+  id: string = '';
   contact: FormGroup;
   readonly: boolean = true;
   editBtnLabel: string = 'Edit';
@@ -65,7 +65,8 @@ export class ContactPage implements OnInit {
   }
 
   getUserFromApi() {
-    this.contactsService.getContactById(this.id).subscribe((user) => {
+    this.contactsService.getContactById(this.id).subscribe(
+      (user) => {
       this.contact = new FormGroup({
         picture: new FormControl(user.picture),
         title: new FormControl({ value: user.title, disabled: this.readonly }),
@@ -88,10 +89,9 @@ export class ContactPage implements OnInit {
 
   convertDateToString(date: String): String {
     if (!date) return '';
-    const d = new Date(date as string);
     // https://stackoverflow.com/questions/11591854/format-date-to-mm-dd-yyyy-in-javascript
-    const dateString = ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate()))  + '/' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))) + '/' + d.getFullYear();
-    return dateString;
+    const d = new Date(date as string);
+    return ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate()))  + '/' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))) + '/' + d.getFullYear();
   }
 
   toggleEditing() {
@@ -109,7 +109,7 @@ export class ContactPage implements OnInit {
 
   update() {
     const updatedUser: UserFull = {
-      id: this.contact.value.id,
+      id: this.id,
       title: this.contact.value.title,
       firstName: this.contact.value.firstName,
       lastName: this.contact.value.lastName,
