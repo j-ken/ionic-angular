@@ -70,7 +70,10 @@ export class ContactPage implements OnInit {
       (user) => {
 
       // convert date to YYYY/MM/DD
-      const formattedDate = moment(user.dateOfBirth).format('YYYY/MM/DD');
+      let formattedDate;
+      const date = moment.utc(user.dateOfBirth, "YYYY/MM/DD");
+      if (date.isValid()) formattedDate = moment(user.dateOfBirth).format('YYYY/MM/DD');
+      else formattedDate = '';
 
       this.contact = new FormGroup({
         picture: new FormControl(user.picture),
