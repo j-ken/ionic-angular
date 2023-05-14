@@ -1,5 +1,3 @@
-<!--TODO: Update User: email is forbidden to update -->
-
 <!--TODO: The form to edit or create a contact should be the same. The only difference is that
 in the case of an edit, you can prefill the form with the contact data. Create a reusable
 component containing the form and taking contact as input (doc).-->
@@ -94,7 +92,7 @@ component containing the form and taking contact as input (doc).-->
     </ion-item>
 
     <!-- email: string(email) -->
-    <ion-item lines="inset">
+    <ion-item lines="inset" [class.emaildisabled]="readonly">
       <ion-label>Email</ion-label>
       <ion-input formControlName="email" label="Email" [readonly]="readonly"></ion-input>
     </ion-item>

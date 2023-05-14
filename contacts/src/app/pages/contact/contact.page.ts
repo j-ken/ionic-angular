@@ -78,7 +78,7 @@ export class ContactPage implements OnInit {
         firstName: new FormControl(user.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
         lastName: new FormControl(user.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
         gender: new FormControl({ value: user.gender, disabled: this.readonly }),
-        email: new FormControl(user.email, [Validators.required, Validators.email]),
+        email: new FormControl({value: user.email, disabled: true}, [Validators.required, Validators.email]),
         phone: new FormControl(user.phone),
         dateOfBirth: new FormControl(formattedDate, [birthdateValidator]),
         location: new FormGroup({

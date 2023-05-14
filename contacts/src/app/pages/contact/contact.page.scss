@@ -8,3 +8,11 @@ ion-input {
   text-align: right;
 }
 
+ion-item {
+  &.emaildisabled {
+    color: black;
+    ion-input {
+      opacity: 1;
+    }
+  }
+}
