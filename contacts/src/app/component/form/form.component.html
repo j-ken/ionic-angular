@@ -13,7 +13,7 @@
 
 <ion-avatar>
   <img *ngIf="contact.get('picture')?.value" [src]="contact.get('picture')?.value" />
-  <img *ngIf="!contact.get('picture')?.value" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
+  <ion-icon *ngIf="!contact.get('picture')?.value" name="camera-outline" size="large" color="medium"></ion-icon>
 </ion-avatar>
 
 <form [formGroup]="contact">
