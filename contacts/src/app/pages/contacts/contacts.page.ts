@@ -50,7 +50,7 @@ export class ContactsPage implements OnInit {
         this.contacts = this.contacts.filter(contact => contact.id !== id);
       },
       error => {
-        console.log(error)
+
       }
     )
   }
@@ -58,7 +58,6 @@ export class ContactsPage implements OnInit {
   showDeleteAlert(isOpen: boolean, user: UserPreview) {
     this.isAlertOpen = isOpen;
     this.userToBeDeleted = user;
-    console.log("id: " + this.userToBeDeleted.id)
   }
   setAlertOpen(isOpen: boolean) {
     this.isAlertOpen = isOpen;

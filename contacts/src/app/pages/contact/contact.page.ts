@@ -136,7 +136,6 @@ export class ContactPage implements OnInit {
 
     this.contactsService.updateContact(updatedUserFull).subscribe(
       updatedContact => {
-        console.log('Contact updated successfully:', updatedContact);
 
         // update contact
         this.contact.patchValue(updatedContact);
@@ -151,7 +150,6 @@ export class ContactPage implements OnInit {
         this.toggleEditing();
       },
       error => {
-        console.log(error)
         // TODO: If something goes wrong when sending the request to the api, alert the user and stay in editing mode
       }
     )
