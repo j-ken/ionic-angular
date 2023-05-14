@@ -5,6 +5,7 @@ import { ContactsService } from "../../services/contacts.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { birthdateValidator } from "../new-contact/new-contact.page";
 import * as moment from "moment";
+import {NewUserPreviewService} from "../../services/new-user-preview.service";
 
 @Component({
   selector: 'app-contact',
@@ -54,6 +55,7 @@ export class ContactPage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private contactsService: ContactsService,
+    private newUserPreviewService: NewUserPreviewService,
   ) { }
 
   ngOnInit() {
@@ -166,7 +168,7 @@ export class ContactPage implements OnInit {
 
     this.contactsService.updateContact(updatedUserFull).subscribe(
       updatedContact => {
-        console.log('Contact created successfully:', updatedContact);
+        console.log('Contact updated successfully:', updatedContact);
 
         // update contact
         this.contact.patchValue(updatedContact);
@@ -175,7 +177,8 @@ export class ContactPage implements OnInit {
         // this.contact.markAsPristine();
         // this.contact.markAsUntouched();
 
-        // TODO: update the UserPreview in contact list
+        // Update the UserPreview in contacts list
+        this.newUserPreviewService.setNewUser(updatedContact);
 
         this.toggleEditing();
       },

@@ -96,7 +96,6 @@ export class NewContactPage implements OnInit {
   constructor(
     private contactsService: ContactsService,
     private newUserPreviewService: NewUserPreviewService,
-    // private newUserFullService: NewUserFullService,
     private router: Router,
   ) { }
 

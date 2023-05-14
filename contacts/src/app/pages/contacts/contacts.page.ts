@@ -30,7 +30,15 @@ export class ContactsPage implements OnInit {
     // Retrieve the newly added user from the shared service
     const newUser = this.newUserPreviewService.getNewUser();
     if (newUser) {
-      this.contacts.push(newUser);
+      const existingUser = this.contacts.find(contact => contact.id === newUser.id);
+      if (existingUser) {
+        // Update the existing contact
+        Object.assign(existingUser, newUser);
+      } else {
+        // Add the new user to the array
+        this.contacts.unshift(newUser);
+      }
+
       // Clear the stored user in the shared service, otherwise it will be added repeatedly
       this.newUserPreviewService.setNewUser(null);
     }
