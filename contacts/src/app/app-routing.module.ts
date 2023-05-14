@@ -19,11 +19,10 @@ const routes: Routes = [
     path: 'new',
     loadChildren: () => import('./pages/new-contact/new-contact.module').then( m => m.NewContactPageModule)
   },
-  // Todo: Fallback
-  // {
-  //   path: "**",
-  //   component: PageNotFoundComponent
-  // }
+  {
+    path: "**",
+    loadChildren: () => import('./pages/page-not-found/page-not-found.module').then( m => m.PageNotFoundPageModule)
+  }
 ];
 
 @NgModule({
