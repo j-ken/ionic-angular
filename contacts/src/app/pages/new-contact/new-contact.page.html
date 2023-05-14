@@ -106,7 +106,7 @@
     <!--    dateOfBirth: string(ISO Date - value: 1/1/1900 - now)-->
     <ion-item lines="inset">
       <ion-label>Birthday</ion-label>
-      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="DD/MM/YYYY"></ion-input>
+      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="YYYY/MM/DD"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.dateOfBirth">

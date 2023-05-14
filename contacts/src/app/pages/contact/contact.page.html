@@ -117,7 +117,7 @@ component containing the form and taking contact as input (doc).-->
     <!-- dateOfBirth: string(ISO Date - value: 1/1/1900 - now) -->
     <ion-item lines="inset">
       <ion-label>Birthday</ion-label>
-      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="DD/MM/YYYY" [readonly]="readonly"></ion-input>
+      <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="YYYY/MM/DD" [readonly]="readonly"></ion-input>
     </ion-item>
     <div *ngIf="!readonly" class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.dateOfBirth">

@@ -4,6 +4,7 @@ import { UserFull } from "../../models/userFull.model";
 import { ContactsService } from "../../services/contacts.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { birthdateValidator } from "../new-contact/new-contact.page";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-contact',
@@ -33,7 +34,7 @@ export class ContactPage implements OnInit {
       { type: 'email', message: 'Please enter a valid email address.' },
     ],
     'dateOfBirth': [
-      { type: 'invalidBirthdate', message: 'Please enter a valid date in the format DD/MM/YYYY.' },
+      { type: 'invalidBirthdate', message: 'Please enter a valid date in the format YYYY/MM/DD.' },
       { type: 'outOfRange', message: 'Birthday must be between 01/01/1900 and today.' }
     ],
     'street': [
@@ -67,6 +68,10 @@ export class ContactPage implements OnInit {
   getUserFromApi() {
     this.contactsService.getContactById(this.id).subscribe(
       (user) => {
+
+      // convert date to YYYY/MM/DD
+      const formattedDate = moment(user.dateOfBirth).format('YYYY/MM/DD');
+
       this.contact = new FormGroup({
         picture: new FormControl(user.picture),
         title: new FormControl({ value: user.title, disabled: this.readonly }),
@@ -75,7 +80,7 @@ export class ContactPage implements OnInit {
         gender: new FormControl({ value: user.gender, disabled: this.readonly }),
         email: new FormControl(user.email, [Validators.required, Validators.email]),
         phone: new FormControl(user.phone),
-        dateOfBirth: new FormControl(user.dateOfBirth, [birthdateValidator]),
+        dateOfBirth: new FormControl(formattedDate, [birthdateValidator]),
         location: new FormGroup({
           street: new FormControl(user.location.street, [Validators.minLength(5), Validators.maxLength(100)]),
           city: new FormControl(user.location.city, [Validators.minLength(2), Validators.maxLength(30)]),
@@ -85,13 +90,6 @@ export class ContactPage implements OnInit {
         })
       });
     })
-  }
-
-  convertDateToString(date: String): String {
-    if (!date) return '';
-    // https://stackoverflow.com/questions/11591854/format-date-to-mm-dd-yyyy-in-javascript
-    const d = new Date(date as string);
-    return ((d.getDate() > 9) ? d.getDate() : ('0' + d.getDate()))  + '/' + ((d.getMonth() > 8) ? (d.getMonth() + 1) : ('0' + (d.getMonth() + 1))) + '/' + d.getFullYear();
   }
 
   toggleEditing() {
