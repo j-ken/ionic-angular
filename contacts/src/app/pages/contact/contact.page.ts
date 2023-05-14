@@ -98,6 +98,7 @@ export class ContactPage implements OnInit {
   toggleEditing() {
     this.toggleReadOnly();
     this.toggleEditBtnLabel();
+    this.toggleFormControls();
   }
 
   toggleReadOnly() {
@@ -108,8 +109,42 @@ export class ContactPage implements OnInit {
     this.editBtnLabel = this.readonly ? 'Edit' : 'Cancel';
   }
 
+  toggleFormControls() {
+    if (this.readonly) {
+      this.contact.controls['title'].disable();
+      this.contact.controls['firstName'].disable();
+      this.contact.controls['lastName'].disable();
+      this.contact.controls['gender'].disable();
+      this.contact.controls['email'].disable();
+      this.contact.controls['dateOfBirth'].disable();
+      this.contact.controls['registerDate'].disable();
+      this.contact.controls['phone'].disable();
+      this.contact.controls['picture'].disable();
+      this.contact.controls['street'].disable();
+      this.contact.controls['city'].disable();
+      this.contact.controls['state'].disable();
+      this.contact.controls['country'].disable();
+      this.contact.controls['timezone'].disable();
+    } else {
+      this.contact.controls['title'].enable();
+      this.contact.controls['firstName'].enable();
+      this.contact.controls['lastName'].enable();
+      this.contact.controls['gender'].enable();
+      // this.contact.controls['email'].enable();
+      this.contact.controls['dateOfBirth'].enable();
+      this.contact.controls['registerDate'].enable();
+      this.contact.controls['phone'].enable();
+      this.contact.controls['picture'].enable();
+      this.contact.controls['street'].enable();
+      this.contact.controls['city'].enable();
+      this.contact.controls['state'].enable();
+      this.contact.controls['country'].enable();
+      this.contact.controls['timezone'].enable();
+    }
+  }
+
   update() {
-    const updatedUser: UserFull = {
+    const updatedUserFull: UserFull = {
       id: this.id,
       title: this.contact.value.title,
       firstName: this.contact.value.firstName,
@@ -129,9 +164,19 @@ export class ContactPage implements OnInit {
       }
     };
 
-    this.contactsService.updateContact(updatedUser).subscribe(
-      success => {
-        console.log('Contact created successfully:', success);
+    this.contactsService.updateContact(updatedUserFull).subscribe(
+      updatedContact => {
+        console.log('Contact created successfully:', updatedContact);
+
+        // update contact
+        this.contact.patchValue(updatedContact);
+
+        // Reset the form validation
+        // this.contact.markAsPristine();
+        // this.contact.markAsUntouched();
+
+        // TODO: update the UserPreview in contact list
+
         this.toggleEditing();
       },
       error => {

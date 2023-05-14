@@ -9,10 +9,23 @@ ion-input {
 }
 
 ion-item {
+  &.item-interactive-disabled {
+    color: black;
+    ion-input {
+      opacity: 1;
+    }
+  }
   &.emaildisabled {
     color: black;
     ion-input {
       opacity: 1;
     }
+  }
+}
+
+ion-input {
+  &.input-disabled {
+    color: black;
+    opacity: 1;
   }
 }

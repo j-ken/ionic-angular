@@ -2,8 +2,6 @@
 in the case of an edit, you can prefill the form with the contact data. Create a reusable
 component containing the form and taking contact as input (doc).-->
 
-<!--TODO: If a field is missing in the contact object, make sure it is not displayed in the view.-->
-
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -38,7 +36,7 @@ component containing the form and taking contact as input (doc).-->
   <form [formGroup]="contact">
 
     <!-- title: string("mr", "ms", "mrs", "miss", "dr", "") -->
-    <ion-item lines="inset">
+    <ion-item lines="inset" *ngIf="contact.get('title')?.value || !readonly">
       <ion-label>Title</ion-label>
       <ion-select formControlName="title" label="Title" [disabled]="readonly">
         <ion-select-option value="mr">Mr.</ion-select-option>
@@ -51,7 +49,7 @@ component containing the form and taking contact as input (doc).-->
     </ion-item>
 
     <!-- firstName: string(length: 2-50) -->
-    <ion-item lines="inset">
+    <ion-item lines="inset" *ngIf="contact.get('firstName')?.value || !readonly">
       <ion-label>First Name</ion-label>
       <ion-input formControlName="firstName" label="First Name" [readonly]="readonly"></ion-input>
     </ion-item>
@@ -66,7 +64,7 @@ component containing the form and taking contact as input (doc).-->
     </div>
 
     <!-- lastName: string(length: 2-50) -->
-    <ion-item lines="inset">
+    <ion-item lines="inset"  *ngIf="contact.get('lastName')?.value || !readonly">
       <ion-label>Last Name</ion-label>
       <ion-input formControlName="lastName" label="Last Name" [readonly]="readonly"></ion-input>
     </ion-item>
@@ -81,7 +79,7 @@ component containing the form and taking contact as input (doc).-->
     </div>
 
     <!-- gender: string("male", "female", "other", "") -->
-    <ion-item lines="inset">
+    <ion-item lines="inset"  *ngIf="contact.get('gender')?.value || !readonly">
       <ion-label>Gender</ion-label>
       <ion-select formControlName="gender" label="Gender" [disabled]="readonly">
         <ion-select-option value="male">Male</ion-select-option>
@@ -92,7 +90,7 @@ component containing the form and taking contact as input (doc).-->
     </ion-item>
 
     <!-- email: string(email) -->
-    <ion-item lines="inset" [class.emaildisabled]="readonly">
+    <ion-item lines="inset" [class.emaildisabled]="readonly" *ngIf="contact.get('email')?.value || !readonly">
       <ion-label>Email</ion-label>
       <ion-input formControlName="email" label="Email" [readonly]="readonly"></ion-input>
     </ion-item>
@@ -107,13 +105,13 @@ component containing the form and taking contact as input (doc).-->
     </div>
 
     <!-- phone: string(phone number - any format) -->
-    <ion-item lines="inset">
+    <ion-item lines="inset" *ngIf="contact.get('phone')?.value || !readonly">
       <ion-label>Phone number</ion-label>
       <ion-input formControlName="phone" label="Phone number" [readonly]="readonly"></ion-input>
     </ion-item>
 
     <!-- dateOfBirth: string(ISO Date - value: 1/1/1900 - now) -->
-    <ion-item lines="inset">
+    <ion-item lines="inset" *ngIf="contact.get('dateOfBirth')?.value || !readonly">
       <ion-label>Birthday</ion-label>
       <ion-input formControlName="dateOfBirth" label="Birthday" displayFormat="YYYY/MM/DD" [readonly]="readonly"></ion-input>
     </ion-item>
@@ -128,7 +126,12 @@ component containing the form and taking contact as input (doc).-->
     </div>
 
     <!-- location: object(Location) -->
-    <ion-item-group>
+    <ion-item-group
+      *ngIf="contact.get('location.street')?.value ||
+             contact.get('location.city')?.value ||
+             contact.get('location.country')?.value ||
+             !readonly"
+    >
 
       <ion-item-divider>
         <ion-label>Address</ion-label>
@@ -136,43 +139,43 @@ component containing the form and taking contact as input (doc).-->
 
       <ng-container formArrayName="location">
 
-        <ion-item lines="inset">
+        <ion-item lines="inset" *ngIf="contact.get('location.street')?.value || !readonly">
           <ion-label>Street</ion-label>
           <ion-input formControlName="street" label="Street" [readonly]="readonly"></ion-input>
         </ion-item>
         <div *ngIf="validationMessages.street && !readonly" class="validation-errors">
           <ng-container *ngFor="let validation of validationMessages.street">
             <p class="error-message"
-               *ngIf="contact.get('street')?.hasError(validation.type) &&
-                (contact.get('street')?.dirty || contact.get('street')?.touched)">
+               *ngIf="contact.get('location.street')?.hasError(validation.type) &&
+                (contact.get('location.street')?.dirty || contact.get('location.street')?.touched)">
               <ion-text color="danger">{{ validation.message }}</ion-text>
             </p>
           </ng-container>
         </div>
 
-        <ion-item lines="inset">
+        <ion-item lines="inset" *ngIf="contact.get('location.city')?.value || !readonly">
           <ion-label>City</ion-label>
           <ion-input formControlName="city" label="City" [readonly]="readonly"></ion-input>
         </ion-item>
         <div *ngIf="validationMessages.country && !readonly" class="validation-errors">
           <ng-container *ngFor="let validation of validationMessages.city">
             <p class="error-message"
-               *ngIf="contact.get('city')?.hasError(validation.type) &&
-                (contact.get('city')?.dirty || contact.get('city')?.touched)">
+               *ngIf="contact.get('location.city')?.hasError(validation.type) &&
+                (contact.get('location.city')?.dirty || contact.get('location.city')?.touched)">
               <ion-text color="danger">{{ validation.message }}</ion-text>
             </p>
           </ng-container>
         </div>
 
-        <ion-item lines="inset">
+        <ion-item lines="inset" *ngIf="contact.get('location.country')?.value || !readonly">
           <ion-label>Country</ion-label>
           <ion-input formControlName="country" label="Country" [readonly]="readonly"></ion-input>
         </ion-item>
         <div *ngIf="validationMessages.country && !readonly" class="validation-errors">
           <ng-container *ngFor="let validation of validationMessages.country">
             <p class="error-message"
-               *ngIf="contact.get('country')?.hasError(validation.type) &&
-                (contact.get('country')?.dirty || contact.get('country')?.touched)">
+               *ngIf="contact.get('location.country')?.hasError(validation.type) &&
+                (contact.get('location.country')?.dirty || contact.get('location.country')?.touched)">
               <ion-text color="danger">{{ validation.message }}</ion-text>
             </p>
           </ng-container>
@@ -193,7 +196,7 @@ component containing the form and taking contact as input (doc).-->
     </ion-item-group>
 
     <!-- picture: string(url) -->
-    <ion-item-group>
+    <ion-item-group *ngIf="contact.get('picture')?.value || !readonly">
       <ion-item-divider>
         <ion-label>Picture</ion-label>
       </ion-item-divider>
